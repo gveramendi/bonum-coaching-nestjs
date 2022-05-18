@@ -1,13 +1,15 @@
-import {Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res, UseGuards} from '@nestjs/common';
 import {ProductsService} from "./products.service";
 import {CreateProductDto} from "./dtos/create-product.dto";
 import {UpdateProductDto} from "./dtos/update-product.dto";
+import {AuthGuard} from "@nestjs/passport";
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
+  @UseGuards(AuthGuard())
   async createProduct(@Res() response, @Body() createProductDto: CreateProductDto) {
     try {
       const newProduct = await this.productsService.createProduct(createProductDto);
@@ -50,6 +52,7 @@ export class ProductsController {
   }
 
   @Put('/:id')
+  @UseGuards(AuthGuard())
   async updateProduct(@Res() response, @Param('id') productId: string, @Body() updateProductDto: UpdateProductDto) {
     try {
       const productUpdated = await this.productsService.updateProduct(productId, updateProductDto);
@@ -64,6 +67,7 @@ export class ProductsController {
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard())
   async deleteProduct(@Res() response, @Param('id') productId: string) {
     try {
       const productDeleted = await this.productsService.deleteProduct(productId);

@@ -21,9 +21,9 @@ export class ProductsService {
   }
 
   async getAllProducts(): Promise<Product[]> {
-    const productData = await this.productModel.find();
+    const products = await this.productModel.find();
 
-    return productData;
+    return products;
   }
 
   async getProduct(productId: string): Promise<Product> {
