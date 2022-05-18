@@ -7,6 +7,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const PORT = process.env.PORT || 3000;
-  await app.listen(PORT);
+  await app.listen(PORT, () => {
+    console.log(`The application is running on localhost:${PORT}!`);
+  });
 }
 bootstrap();
