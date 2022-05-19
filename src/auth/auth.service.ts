@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
+import {Injectable, Logger, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import {JwtService} from "@nestjs/jwt";
 import {UsersService} from "../users/users.service";
 import {LoginUserDto} from "./dtos/login-user.dto";
@@ -8,6 +8,8 @@ import {RegisterUserDto} from "./dtos/register-user.dto";
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
   async registerUser(registerUserDto: RegisterUserDto) {
@@ -21,6 +23,7 @@ export class AuthService {
       throw new NotFoundException('Wrong email or password.');
     }
 
+    this.logger.log(`User with email: ${user.email} has login to the app.`);
     return this.createJwtPayload(user);
   }
 

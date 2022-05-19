@@ -1,4 +1,4 @@
-import {BadRequestException, Injectable, NotFoundException} from '@nestjs/common';
+import {BadRequestException, Injectable, Logger, NotFoundException} from '@nestjs/common';
 import {Model} from "mongoose";
 import {InjectModel} from "@nestjs/mongoose";
 import {Product} from "./interfaces/product.interface";
@@ -7,6 +7,8 @@ import {UpdateProductDto} from "./dtos/update-product.dto";
 
 @Injectable()
 export class ProductsService {
+  private readonly logger = new Logger(ProductsService.name);
+
   constructor(@InjectModel('Product') private productModel:Model<Product>) {}
 
   async createProduct(createProductDto: CreateProductDto): Promise<Product> {
@@ -16,6 +18,7 @@ export class ProductsService {
     }
 
     const newProduct = await new this.productModel(createProductDto);
+    this.logger.log(`Product with id: ${newProduct.id} was create.`);
 
     return newProduct.save();
   }
@@ -46,6 +49,7 @@ export class ProductsService {
       throw new NotFoundException(`Product #${productId} not found`);
     }
 
+    this.logger.log(`Product with id: ${existingProduct.id} was update.`);
     return existingProduct;
   }
 
@@ -55,6 +59,7 @@ export class ProductsService {
       throw new NotFoundException(`Product #${productId} not found`);
     }
 
+    this.logger.log(`Product with id: ${deletedProduct.id} was delete.`);
     return deletedProduct;
   }
 }

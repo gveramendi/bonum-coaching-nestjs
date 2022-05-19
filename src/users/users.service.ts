@@ -1,4 +1,4 @@
-import {BadRequestException, Injectable, NotFoundException} from '@nestjs/common';
+import {BadRequestException, Injectable, Logger, NotFoundException} from '@nestjs/common';
 import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
 import {User} from "./interfaces/user.interface";
@@ -7,6 +7,8 @@ import {Product} from "../products/interfaces/product.interface";
 
 @Injectable()
 export class UsersService {
+  private readonly logger = new Logger(UsersService.name);
+
   constructor(@InjectModel('User') private userModel: Model<User>) {}
 
   async create(registerUserDto: RegisterUserDto) {
@@ -16,6 +18,7 @@ export class UsersService {
     }
 
     const createdUser = await new this.userModel(registerUserDto);
+    this.logger.log(`User with id: ${createdUser.id} was create.`);
 
     return createdUser.save();
   }
