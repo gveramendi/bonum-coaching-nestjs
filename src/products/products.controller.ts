@@ -3,7 +3,9 @@ import {ProductsService} from "./products.service";
 import {CreateProductDto} from "./dtos/create-product.dto";
 import {UpdateProductDto} from "./dtos/update-product.dto";
 import {AuthGuard} from "@nestjs/passport";
+import {ApiBearerAuth} from "@nestjs/swagger";
 
+@ApiBearerAuth()
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}

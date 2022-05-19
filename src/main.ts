@@ -11,7 +11,7 @@ async function bootstrap() {
       .setTitle('Bonun Coaching App API')
       .setDescription('Bonun Coaching App API documentation.')
       .setVersion('1.0')
-      .addTag('bonun-coaching')
+      .addBearerAuth()
       .build();
   const document = SwaggerModule.createDocument(app, documentBuilder);
   SwaggerModule.setup('swagger', app, document);
